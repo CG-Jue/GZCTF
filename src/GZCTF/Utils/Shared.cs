@@ -137,30 +137,44 @@ public class FileRecord
 /// </summary>
 public readonly struct BloodBonus(long init = BloodBonus.DefaultValue)
 {
+    // 定义默认值
     public const long DefaultValue = (50 << 20) + (30 << 10) + 10;
+    // 定义掩码
     const int Mask = 0x3ff;
+    // 定义基数
     const int Base = 1000;
 
+    // 定义属性
     public long Val { get; } = init;
 
+    // 从值创建BloodBonus
     public static BloodBonus FromValue(long value)
     {
+        // 如果值超出范围，则返回默认值
         if ((value & Mask) > Base || ((value >> 10) & Mask) > Base || ((value >> 20) & Mask) > Base)
             return new();
+        // 否则返回新值
         return new(value);
     }
 
+    // 获取第一滴血的值
     public long FirstBlood => (Val >> 20) & 0x3ff;
 
+    // 获取第一滴血的因子
     public float FirstBloodFactor => FirstBlood / 1000f + 1.0f;
 
+    // 获取第二滴血的值
     public long SecondBlood => (Val >> 10) & 0x3ff;
 
+    // 获取第二滴血的因子
     public float SecondBloodFactor => SecondBlood / 1000f + 1.0f;
 
+    // 获取第三滴血的值
     public long ThirdBlood => Val & 0x3ff;
 
+    // 获取第三滴血的因子
     public float ThirdBloodFactor => ThirdBlood / 1000f + 1.0f;
 
+    // 判断是否有奖励
     public bool NoBonus => Val == 0;
 }
